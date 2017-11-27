@@ -29,7 +29,7 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
     TransferFunction tFunc;
     TransferFunctionEditor tfEditor;
     TransferFunction2DEditor tfEditor2D;
-    
+
     public RaycastRenderer() {
         panel = new RaycastRendererPanel(this);
         panel.setSpeedLabel("0");
@@ -53,14 +53,14 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
         // create a standard TF where lowest intensity maps to black, the highest to white, and opacity increases
         // linearly from 0.0 to 1.0 over the intensity range
         tFunc = new TransferFunction(volume.getMinimum(), volume.getMaximum());
-        
-        // uncomment this to initialize the TF with good starting values for the orange dataset 
+
+        // uncomment this to initialize the TF with good starting values for the orange dataset
         tFunc.setTestFunc();
-        
-        
+
+
         tFunc.addTFChangeListener(this);
         tfEditor = new TransferFunctionEditor(tFunc, volume.getHistogram());
-        
+
         tfEditor2D = new TransferFunction2DEditor(volume, gradients);
         tfEditor2D.addTFChangeListener(this);
 
@@ -74,11 +74,11 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
     public TransferFunction2DEditor getTF2DPanel() {
         return tfEditor2D;
     }
-    
+
     public TransferFunctionEditor getTFPanel() {
         return tfEditor;
     }
-     
+
 
     short getVoxel(double[] coord) {
 
@@ -104,7 +104,7 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
             }
         }
 
-        // vector uVec and vVec define a plane through the origin, 
+        // vector uVec and vVec define a plane through the origin,
         // perpendicular to the view vector viewVec
         double[] viewVec = new double[3];
         double[] uVec = new double[3];
@@ -124,7 +124,7 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
         double max = volume.getMaximum();
         TFColor voxelColor = new TFColor();
 
-        
+
         for (int j = 0; j < image.getHeight(); j++) {
             for (int i = 0; i < image.getWidth(); i++) {
                 pixelCoord[0] = uVec[0] * (i - imageCenter) + vVec[0] * (j - imageCenter)
@@ -135,7 +135,7 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
                         + volumeCenter[2];
 
                 int val = getVoxel(pixelCoord);
-                
+
                 // Map the intensity to a grey value by linear scaling
                 voxelColor.r = val/max;
                 voxelColor.g = voxelColor.r;
@@ -230,8 +230,8 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
         gl.glGetDoublev(GL2.GL_MODELVIEW_MATRIX, viewMatrix, 0);
 
         long startTime = System.currentTimeMillis();
-        slicer(viewMatrix);    
-        
+        slicer(viewMatrix);
+
         long endTime = System.currentTimeMillis();
         double runningTime = (endTime - startTime);
         panel.setSpeedLabel(Double.toString(runningTime));
