@@ -158,6 +158,31 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
     }
 
 
+    /*
+    Calculate shortest distance from point "P" to the line determined
+    by points "A" and "B".
+
+    See http://mathworld.wolfram.com/Point-LineDistance3-Dimensional.html
+    */
+    double GetDistance(double[] P, double[] A, double[] B) {
+        double[] PMinusA = new double[3];
+        double[] PMinusB = new double[3];
+        double[] BMinusA = new double[3];
+
+        VectorMath.setVector(PMinusA, P[0] - A[0], P[1] - A[1], P[2] - A[2]);
+        VectorMath.setVector(PMinusB, P[0] - B[0], P[1] - B[1], P[2] - B[2]);
+        VectorMath.setVector(BMinusA, B[0] - A[0], B[1] - A[1], B[2] - A[2]);
+
+        double[] crossProd = new double[3];
+        crossProd = VectorMath.crossproduct(PMinusA, PMinusB, crossProd);
+
+        double numerator = VectorMath.length(crossProd);
+        double denominator = VectorMath.length(BMinusA);
+
+        return numerator/denominator;
+    }
+
+
     void mip(double[] viewMatrix) {
 
         // clear image
