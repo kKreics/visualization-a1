@@ -222,6 +222,25 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
                 pixelCoord[2] = uVec[2] * (i - imageCenter) + vVec[2] * (j - imageCenter)
                         + volumeCenter[2];
 
+                // Here, we are just drawing the corresponding value from the image.
+                // What we must do, is cast a "ray" in the direction of the viewer.
+                // For all intersecting Voxels (or voxels that are within some distance
+                // of the line that passes through the theoretically corresponding pixel)
+                //
+                // First naive idea:
+                // For each pixel in the image.
+                //   Max = 0
+                //   Get vector that goes from viewer through it
+                //   For each voxel, calculate distance to the line
+                //     If the distance is <= 1
+                //       Max = max(Max, value)
+                //   Set all its RGBA values to Max
+                //
+                // What might help to do?
+                // - Method that returns Voxel values in some direction from a volume (within some distance threshold)
+                // For part 3 of the assignment, perhaps we could calculate it faster by
+                // filling a matrix with the whole image at the same time, instead of calculating
+                // it "pixel per pixel".
                 int val = getVoxel(pixelCoord);
 
                 // Map the intensity to a grey value by linear scaling
