@@ -260,7 +260,7 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
                         break;
                     }
 
-                    if (voxelIntensity >= currentMaxIntensity) {
+                    if (voxelIntensity > currentMaxIntensity) {
                         currentMaxIntensity = voxelIntensity;
                     }
                 }
@@ -282,7 +282,7 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
                         break;
                     }
 
-                    if (voxelIntensity >= currentMaxIntensity) {
+                    if (voxelIntensity > currentMaxIntensity) {
                         currentMaxIntensity = voxelIntensity;
                     }
                 }
