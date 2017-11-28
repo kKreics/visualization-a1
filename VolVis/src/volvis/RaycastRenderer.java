@@ -84,7 +84,7 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
 
         if (coord[0] < 0 || coord[0] >= volume.getDimX() || coord[1] < 0 || coord[1] >= volume.getDimY()
                 || coord[2] < 0 || coord[2] >= volume.getDimZ()) {
-            return 0;
+            return -1;
         }
 
         int x = (int) Math.floor(coord[0]);
@@ -222,6 +222,25 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
                 pixelCoord[2] = uVec[2] * (i - imageCenter) + vVec[2] * (j - imageCenter)
                         + volumeCenter[2];
 
+                short currentMaxIntensity = 0;
+
+                double[] pixelCoordViewVec = new double[3];
+                VectorMath.setVector(pixelCoordViewVec, pixelCoord[0] + viewVec[0], pixelCoord[1] + viewVec[1], pixelCoord[2] + viewVec[2]);
+                double[] viewScale = VectorMath.scaleVector(viewVec, 1);
+
+                while (true) {
+                    VectorMath.setVector(pixelCoordViewVec, pixelCoordViewVec[0] + viewScale[0], pixelCoordViewVec[1] + viewScale[1], pixelCoordViewVec[2] + viewScale[2]);
+
+                    short voxelIntensity = getVoxel(pixelCoordViewVec);
+
+                    if (voxelIntensity == -1) {
+                        break;
+                    }
+
+                    if (voxelIntensity >= currentMaxIntensity) {
+                        currentMaxIntensity = voxelIntensity;
+                    }
+                }
                 // Here, we are just drawing the corresponding value from the image.
                 // What we must do, is cast a "ray" in the direction of the viewer.
                 // For all intersecting Voxels (or voxels that are within some distance
@@ -241,15 +260,15 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
                 // For part 3 of the assignment, perhaps we could calculate it faster by
                 // filling a matrix with the whole image at the same time, instead of calculating
                 // it "pixel per pixel".
-                int val = getVoxel(pixelCoord);
+                // int val = getVoxel(pixelCoord);
 
                 // Map the intensity to a grey value by linear scaling
-                voxelColor.r = val/max;
+                voxelColor.r = currentMaxIntensity/max;
                 voxelColor.g = voxelColor.r;
                 voxelColor.b = voxelColor.r;
-                voxelColor.a = val > 0 ? 1.0 : 0.0;  // this makes intensity 0 completely transparent and the rest opaque
+                voxelColor.a = currentMaxIntensity > 0 ? 1.0 : 0.0;  // this makes intensity 0 completely transparent and the rest opaque
                 // Alternatively, apply the transfer function to obtain a color
-                // voxelColor = tFunc.getColor(val);
+                // voxelColor = tFunc.getColor(currentMaxIntensity);
 
 
                 // BufferedImage expects a pixel color packed as ARGB in an int
