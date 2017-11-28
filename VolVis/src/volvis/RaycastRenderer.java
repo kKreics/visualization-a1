@@ -24,6 +24,8 @@ import volume.Volume;
 public class RaycastRenderer extends Renderer implements TFChangeListener {
 
     private Volume volume = null;
+    private int interactiveStep = 35;
+    private boolean skipTrilinearInterpolation = false;
     private GradientVolume gradients = null;
     RaycastRendererPanel panel;
     TransferFunction tFunc;
@@ -88,10 +90,13 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
         }
         
         int x0 = (int) Math.floor(coord[0]);
-        int x1 = (int) Math.ceil(coord[0]);
         int y0 = (int) Math.floor(coord[1]);
-        int y1 = (int) Math.ceil(coord[1]);
         int z0 = (int) Math.floor(coord[2]);
+        
+        if (skipTrilinearInterpolation) return volume.getVoxel(x0, y0, z0);
+        
+        int x1 = (int) Math.ceil(coord[0]);
+        int y1 = (int) Math.ceil(coord[1]);
         int z1 = (int) Math.ceil(coord[2]);
         
         double alfa = coord[0] - x0;
@@ -202,7 +207,7 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
 
     void mip(double[] viewMatrix) {
         // clear image
-        int step = interactiveMode ? 40 : 1;
+        int step = interactiveMode ? interactiveStep : 1;
         for (int j = 0; j < image.getHeight(); j++) {
             for (int i = 0; i < image.getWidth(); i++) {
                 image.setRGB(i, j, 0);
