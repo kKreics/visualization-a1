@@ -82,16 +82,33 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
 
     short getVoxel(double[] coord) {
 
-        if (coord[0] < 0 || coord[0] >= volume.getDimX() || coord[1] < 0 || coord[1] >= volume.getDimY()
-                || coord[2] < 0 || coord[2] >= volume.getDimZ()) {
+        if (coord[0] < 0 || coord[0] + 1 >= volume.getDimX() || coord[1] < 0 || coord[1] + 1 >= volume.getDimY()
+                || coord[2] < 0 || coord[2] + 1 >= volume.getDimZ()) {
             return -1;
         }
-
-        int x = (int) Math.floor(coord[0]);
-        int y = (int) Math.floor(coord[1]);
-        int z = (int) Math.floor(coord[2]);
-
-        return volume.getVoxel(x, y, z);
+        
+        int x0 = (int) Math.floor(coord[0]);
+        int x1 = (int) Math.ceil(coord[0]);
+        int y0 = (int) Math.floor(coord[1]);
+        int y1 = (int) Math.ceil(coord[1]);
+        int z0 = (int) Math.floor(coord[2]);
+        int z1 = (int) Math.ceil(coord[2]);
+        
+        double alfa = coord[0] - x0;
+        double beta = coord[1] - y0;
+        double gamma = coord[2] - z0;
+        
+        
+        return (short) (
+            ((1 - alfa) * (1 - beta) * (1 - gamma) * volume.getVoxel(x0, y0, z0)) +
+            (alfa * (1 - beta) * (1 - gamma) * volume.getVoxel(x1, y0, z0)) +
+            ((1 - alfa) * beta * (1 - gamma) * volume.getVoxel(x0, y1, z0)) +
+            (alfa * beta * (1 - gamma) * volume.getVoxel(x1, y1, z0)) +
+            ((1 - alfa) * (1 - beta) * gamma * volume.getVoxel(x0, y0, z1)) +
+            (alfa * (1 - beta) * gamma * volume.getVoxel(x1, y0, z1)) +
+            ((1 - alfa) * beta * gamma * volume.getVoxel(x0, y1, z1)) +
+            (alfa * beta * gamma * volume.getVoxel(x1, y1, z1))
+        );
     }
 
 
@@ -267,7 +284,7 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
                 voxelColor.b = voxelColor.r;
                 voxelColor.a = currentMaxIntensity > 0 ? 1.0 : 0.0;  // this makes intensity 0 completely transparent and the rest opaque
                 // Alternatively, apply the transfer function to obtain a color
-                // voxelColor = tFunc.getColor(currentMaxIntensity);
+//                voxelColor = tFunc.getColor(currentMaxIntensity);
 
 
                 // BufferedImage expects a pixel color packed as ARGB in an int
