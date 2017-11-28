@@ -224,12 +224,11 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
 
                 short currentMaxIntensity = 0;
 
-                double[] pixelCoordViewVec = new double[3];
-                VectorMath.setVector(pixelCoordViewVec, pixelCoord[0] + viewVec[0], pixelCoord[1] + viewVec[1], pixelCoord[2] + viewVec[2]);
+                double[] pixelCoordViewVec = VectorMath.addVectors(pixelCoord, viewVec);
                 double[] viewScale = VectorMath.scaleVector(viewVec, 1);
 
                 while (true) {
-                    VectorMath.setVector(pixelCoordViewVec, pixelCoordViewVec[0] + viewScale[0], pixelCoordViewVec[1] + viewScale[1], pixelCoordViewVec[2] + viewScale[2]);
+                    pixelCoordViewVec = VectorMath.addVectors(pixelCoordViewVec, viewScale);
 
                     short voxelIntensity = getVoxel(pixelCoordViewVec);
 

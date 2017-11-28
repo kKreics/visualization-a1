@@ -17,6 +17,14 @@ public class VectorMath {
         v[2] = c2;
     }
 
+    // Return the sum of two vectors, element-wise
+    public static double[] addVectors(double[] v, double[] w) {
+        double[] result = new double[3];
+        VectorMath.setVector(result, v[0] + w[0], v[1] + w[1], v[2] + w[2]);
+
+        return result;
+    }
+
     // compute dotproduct of vectors v and w
     public static double dotproduct(double[] v, double[] w) {
         double r = 0;
