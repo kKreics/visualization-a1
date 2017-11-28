@@ -201,8 +201,8 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
 
 
     void mip(double[] viewMatrix) {
-
         // clear image
+        int step = interactiveMode ? 40 : 1;
         for (int j = 0; j < image.getHeight(); j++) {
             for (int i = 0; i < image.getWidth(); i++) {
                 image.setRGB(i, j, 0);
@@ -242,7 +242,7 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
                 short currentMaxIntensity = 0;
 
                 double[] pixelCoordViewVec = VectorMath.addVectors(pixelCoord, viewVec);
-                double[] viewScale = VectorMath.scaleVector(viewVec, 1);
+                double[] viewScale = VectorMath.scaleVector(viewVec, step);
 
                 while (true) {
                     pixelCoordViewVec = VectorMath.addVectors(pixelCoordViewVec, viewScale);
