@@ -34,6 +34,13 @@ public class VectorMath {
         return r;
     }
 
+     // Return a clone of the given vector
+    public static double[] cloneVector(double[] v) {
+        double[] result = new double[3];
+        VectorMath.setVector(result, v[0], v[1], v[2]);
+
+        return result;
+    }
 
     // Return a scaled version of a given vector by some factor
     public static double[] scaleVector(double[] v, double factor) {

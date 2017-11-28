@@ -248,14 +248,13 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
 
                 // Move in the direction of viewVec, starting in the plane
                 // that cuts the figure in two, perpendicular to the viewPlane
-                double[] pixelCoordViewVec = VectorMath.addVectors(pixelCoord, viewVec);
+                double[] pixelCoordViewVec = VectorMath.cloneVector(pixelCoord);
                 double[] viewScale = VectorMath.scaleVector(viewVec, step);
 
                 while (true) {
-                    pixelCoordViewVec = VectorMath.addVectors(pixelCoordViewVec, viewScale);
-
                     short voxelIntensity = getVoxel(pixelCoordViewVec);
 
+                    // We are out of the figure
                     if (voxelIntensity == -1) {
                         break;
                     }
@@ -263,21 +262,21 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
                     if (voxelIntensity > currentMaxIntensity) {
                         currentMaxIntensity = voxelIntensity;
                     }
+
+                    pixelCoordViewVec = VectorMath.addVectors(pixelCoordViewVec, viewScale);
                 }
 
 
                 // Move in the opposite direction of viewVec, starting in the
                 // plane that cuts the figure in two, perpendicular to the
                 // viewPlane
-                double[] reverseViewVec = VectorMath.scaleVector(viewVec, -1);
-                pixelCoordViewVec = VectorMath.addVectors(pixelCoord, reverseViewVec);
-                viewScale = VectorMath.scaleVector(reverseViewVec, step);
+                pixelCoordViewVec = VectorMath.cloneVector(pixelCoord);
+                viewScale = VectorMath.scaleVector(viewVec, -step);
 
                 while (true) {
-                    pixelCoordViewVec = VectorMath.addVectors(pixelCoordViewVec, viewScale);
-
                     short voxelIntensity = getVoxel(pixelCoordViewVec);
 
+                    // We are out of the figure
                     if (voxelIntensity == -1) {
                         break;
                     }
@@ -285,6 +284,8 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
                     if (voxelIntensity > currentMaxIntensity) {
                         currentMaxIntensity = voxelIntensity;
                     }
+
+                    pixelCoordViewVec = VectorMath.addVectors(pixelCoordViewVec, viewScale);
                 }
 
                 // Map the intensity to a grey value by linear scaling
