@@ -246,6 +246,8 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
 
                 short currentMaxIntensity = 0;
 
+                // Move in the direction of viewVec, starting in the plane
+                // that cuts the figure in two, perpendicular to the viewPlane
                 double[] pixelCoordViewVec = VectorMath.addVectors(pixelCoord, viewVec);
                 double[] viewScale = VectorMath.scaleVector(viewVec, step);
 
@@ -262,6 +264,29 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
                         currentMaxIntensity = voxelIntensity;
                     }
                 }
+
+
+                // Move in the opposite direction of viewVec, starting in the
+                // plane that cuts the figure in two, perpendicular to the
+                // viewPlane
+                double[] reverseViewVec = VectorMath.scaleVector(viewVec, -1);
+                pixelCoordViewVec = VectorMath.addVectors(pixelCoord, reverseViewVec);
+                viewScale = VectorMath.scaleVector(reverseViewVec, step);
+
+                while (true) {
+                    pixelCoordViewVec = VectorMath.addVectors(pixelCoordViewVec, viewScale);
+
+                    short voxelIntensity = getVoxel(pixelCoordViewVec);
+
+                    if (voxelIntensity == -1) {
+                        break;
+                    }
+
+                    if (voxelIntensity >= currentMaxIntensity) {
+                        currentMaxIntensity = voxelIntensity;
+                    }
+                }
+
                 // Here, we are just drawing the corresponding value from the image.
                 // What we must do, is cast a "ray" in the direction of the viewer.
                 // For all intersecting Voxels (or voxels that are within some distance
