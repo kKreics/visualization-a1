@@ -26,6 +26,15 @@ public class VectorMath {
         return r;
     }
 
+
+    // Return a scaled version of a given vector by some factor
+    public static double[] scaleVector(double[] v, double factor) {
+        double[] result = new double[3];
+        VectorMath.setVector(result, v[0]*factor, v[1]*factor, v[2]*factor);
+
+        return result;
+    }
+
     // compute distance between vectors v and w
     public static double distance(double[] v, double[] w) {
         double[] tmp = new double[3];
