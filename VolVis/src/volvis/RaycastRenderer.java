@@ -336,12 +336,12 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
 
         // sample on a plane through the origin of the volume data
         double max = volume.getMaximum();
-        TFColor voxelColor = new TFColor();
-        TFColor tmpColor = new TFColor();
-
 
         for (int j = 0; j < image.getHeight(); j++) {
             for (int i = 0; i < image.getWidth(); i++) {
+                TFColor voxelColor = new TFColor();
+                TFColor tmpColor = new TFColor();
+
                 pixelCoord[0] = uVec[0] * (i - imageCenter) + vVec[0] * (j - imageCenter)
                         + volumeCenter[0];
                 pixelCoord[1] = uVec[1] * (i - imageCenter) + vVec[1] * (j - imageCenter)
