@@ -358,6 +358,17 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
                 double[] pixelCoordViewVec = VectorMath.cloneVector(pixelCoord);
                 double[] viewScale = VectorMath.scaleVector(viewVec, step);
 
+                // Advance until the end of the volume (out of bounds)
+                while (getVoxel(pixelCoordViewVec) != -1) {
+                    pixelCoordViewVec = VectorMath.addVectors(pixelCoordViewVec, viewScale);
+                }
+
+                // Reverse the moving vector
+                viewScale = VectorMath.scaleVector(viewScale, -1);
+                // Get inside the volume again
+                pixelCoordViewVec = VectorMath.addVectors(pixelCoordViewVec, viewScale);
+
+                // Iterate the volume until we get out of the volume from the other side
                 while (true) {
                     short voxelIntensity = getVoxel(pixelCoordViewVec);
 
@@ -372,34 +383,6 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
                     voxelColor.b = tmpColor.b * tmpColor.a + (1 - tmpColor.a) * voxelColor.b;
 
                     pixelCoordViewVec = VectorMath.addVectors(pixelCoordViewVec, viewScale);
-                }
-
-                if (this.raycastBothWays) {
-                    // Move in the opposite direction of viewVec, starting in the
-                    // plane that cuts the figure in two, perpendicular to the
-                    // viewPlane
-                    pixelCoordViewVec = VectorMath.cloneVector(pixelCoord);
-                    viewScale = VectorMath.scaleVector(viewVec, -step);
-
-                    while (true) {
-                        // When moving in the opposite direction, first apply the
-                        // increment so as not to do calculations with the middle
-                        // pixel twice
-                        pixelCoordViewVec = VectorMath.addVectors(pixelCoordViewVec, viewScale);
-
-                        short voxelIntensity = getVoxel(pixelCoordViewVec);
-
-                        // We are out of the figure
-                        if (voxelIntensity == -1) {
-                            break;
-                        }
-
-                        tmpColor = tFunc.getColor(voxelIntensity);
-                        voxelColor.r = tmpColor.r * tmpColor.a + (1 - tmpColor.a) * voxelColor.r;
-                        voxelColor.g = tmpColor.g * tmpColor.a + (1 - tmpColor.a) * voxelColor.g;
-                        voxelColor.b = tmpColor.b * tmpColor.a + (1 - tmpColor.a) * voxelColor.b;
-
-                    }
                 }
 
                 // BufferedImage expects a pixel color packed as ARGB in an int
