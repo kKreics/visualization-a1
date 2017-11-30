@@ -334,9 +334,6 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
         double[] volumeCenter = new double[3];
         VectorMath.setVector(volumeCenter, volume.getDimX() / 2, volume.getDimY() / 2, volume.getDimZ() / 2);
 
-        // sample on a plane through the origin of the volume data
-        double max = volume.getMaximum();
-
         for (int j = 0; j < image.getHeight(); j++) {
             for (int i = 0; i < image.getWidth(); i++) {
                 TFColor voxelColor = new TFColor();
@@ -392,15 +389,6 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
 
                     pixelCoordViewVec = VectorMath.addVectors(pixelCoordViewVec, viewScale);
                 }
-
-                // Map the intensity to a grey value by linear scaling
-//                voxelColor.r = currentMaxIntensity/max;
-//                voxelColor.g = voxelColor.r;
-//                voxelColor.b = voxelColor.r;
-//                voxelColor.a = currentMaxIntensity > 0 ? 1.0 : 0.0;  // this makes intensity 0 completely transparent and the rest opaque
-                // Alternatively, apply the transfer function to obtain a color
-//                voxelColor = tFunc.getColor(currentMaxIntensity);
-
 
                 // BufferedImage expects a pixel color packed as ARGB in an int
                 int c_alpha = voxelColor.a <= 1.0 ? (int) Math.floor(voxelColor.a * 255) : 255;
