@@ -88,22 +88,22 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
                 || coord[2] < 0 || coord[2] + 1 >= volume.getDimZ()) {
             return -1;
         }
-        
+
         int x0 = (int) Math.floor(coord[0]);
         int y0 = (int) Math.floor(coord[1]);
         int z0 = (int) Math.floor(coord[2]);
-        
+
         if (skipTrilinearInterpolation) return volume.getVoxel(x0, y0, z0);
-        
+
         int x1 = (int) Math.ceil(coord[0]);
         int y1 = (int) Math.ceil(coord[1]);
         int z1 = (int) Math.ceil(coord[2]);
-        
+
         double alfa = coord[0] - x0;
         double beta = coord[1] - y0;
         double gamma = coord[2] - z0;
-        
-        
+
+
         return (short) (
             ((1 - alfa) * (1 - beta) * (1 - gamma) * volume.getVoxel(x0, y0, z0)) +
             (alfa * (1 - beta) * (1 - gamma) * volume.getVoxel(x1, y0, z0)) +
@@ -308,7 +308,7 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
         }
 
     }
-    
+
     void composite(double[] viewMatrix) {
         // clear image
         int step = interactiveMode ? interactiveStep : 1;
@@ -358,12 +358,12 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
                     if (voxelIntensity == -1) {
                         break;
                     }
-                    
+
                     tmpColor = tFunc.getColor(voxelIntensity);
                     voxelColor.r = tmpColor.r * tmpColor.a + (1 - tmpColor.a) * voxelColor.r;
                     voxelColor.g = tmpColor.g * tmpColor.a + (1 - tmpColor.a) * voxelColor.g;
                     voxelColor.b = tmpColor.b * tmpColor.a + (1 - tmpColor.a) * voxelColor.b;
-                    
+
                     pixelCoordViewVec = VectorMath.addVectors(pixelCoordViewVec, viewScale);
                 }
 
