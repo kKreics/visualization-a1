@@ -274,6 +274,11 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
                 viewScale = VectorMath.scaleVector(viewVec, -step);
 
                 while (true) {
+                    // When moving in the opposite direction, first apply the
+                    // increment so as not to do calculations with the middle
+                    // pixel twice
+                    pixelCoordViewVec = VectorMath.addVectors(pixelCoordViewVec, viewScale);
+
                     short voxelIntensity = getVoxel(pixelCoordViewVec);
 
                     // We are out of the figure
@@ -284,8 +289,6 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
                     if (voxelIntensity > currentMaxIntensity) {
                         currentMaxIntensity = voxelIntensity;
                     }
-
-                    pixelCoordViewVec = VectorMath.addVectors(pixelCoordViewVec, viewScale);
                 }
 
                 // Map the intensity to a grey value by linear scaling
@@ -375,6 +378,11 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
                 viewScale = VectorMath.scaleVector(viewVec, -step);
 
                 while (true) {
+                    // When moving in the opposite direction, first apply the
+                    // increment so as not to do calculations with the middle
+                    // pixel twice
+                    pixelCoordViewVec = VectorMath.addVectors(pixelCoordViewVec, viewScale);
+
                     short voxelIntensity = getVoxel(pixelCoordViewVec);
 
                     // We are out of the figure
@@ -387,7 +395,6 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
                     voxelColor.g = tmpColor.g * tmpColor.a + (1 - tmpColor.a) * voxelColor.g;
                     voxelColor.b = tmpColor.b * tmpColor.a + (1 - tmpColor.a) * voxelColor.b;
 
-                    pixelCoordViewVec = VectorMath.addVectors(pixelCoordViewVec, viewScale);
                 }
 
                 // BufferedImage expects a pixel color packed as ARGB in an int
