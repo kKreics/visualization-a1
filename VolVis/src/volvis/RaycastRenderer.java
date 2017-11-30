@@ -25,6 +25,9 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
 
     private Volume volume = null;
     private int interactiveStep = 35;
+    // If true, ray will be casted both directions from the middle of the
+    // figure. If false, ray will be casted only in one direction.
+    private boolean raycastBothWays = true;
     private boolean skipTrilinearInterpolation = false;
     private GradientVolume gradients = null;
     RaycastRendererPanel panel;
@@ -266,28 +269,29 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
                     pixelCoordViewVec = VectorMath.addVectors(pixelCoordViewVec, viewScale);
                 }
 
+                if (this.raycastBothWays) {
+                    // Move in the opposite direction of viewVec, starting in the
+                    // plane that cuts the figure in two, perpendicular to the
+                    // viewPlane
+                    pixelCoordViewVec = VectorMath.cloneVector(pixelCoord);
+                    viewScale = VectorMath.scaleVector(viewVec, -step);
 
-                // Move in the opposite direction of viewVec, starting in the
-                // plane that cuts the figure in two, perpendicular to the
-                // viewPlane
-                pixelCoordViewVec = VectorMath.cloneVector(pixelCoord);
-                viewScale = VectorMath.scaleVector(viewVec, -step);
+                    while (true) {
+                        // When moving in the opposite direction, first apply the
+                        // increment so as not to do calculations with the middle
+                        // pixel twice
+                        pixelCoordViewVec = VectorMath.addVectors(pixelCoordViewVec, viewScale);
 
-                while (true) {
-                    // When moving in the opposite direction, first apply the
-                    // increment so as not to do calculations with the middle
-                    // pixel twice
-                    pixelCoordViewVec = VectorMath.addVectors(pixelCoordViewVec, viewScale);
+                        short voxelIntensity = getVoxel(pixelCoordViewVec);
 
-                    short voxelIntensity = getVoxel(pixelCoordViewVec);
+                        // We are out of the figure
+                        if (voxelIntensity == -1) {
+                            break;
+                        }
 
-                    // We are out of the figure
-                    if (voxelIntensity == -1) {
-                        break;
-                    }
-
-                    if (voxelIntensity > currentMaxIntensity) {
-                        currentMaxIntensity = voxelIntensity;
+                        if (voxelIntensity > currentMaxIntensity) {
+                            currentMaxIntensity = voxelIntensity;
+                        }
                     }
                 }
 
@@ -370,31 +374,32 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
                     pixelCoordViewVec = VectorMath.addVectors(pixelCoordViewVec, viewScale);
                 }
 
+                if (this.raycastBothWays) {
+                    // Move in the opposite direction of viewVec, starting in the
+                    // plane that cuts the figure in two, perpendicular to the
+                    // viewPlane
+                    pixelCoordViewVec = VectorMath.cloneVector(pixelCoord);
+                    viewScale = VectorMath.scaleVector(viewVec, -step);
 
-                // Move in the opposite direction of viewVec, starting in the
-                // plane that cuts the figure in two, perpendicular to the
-                // viewPlane
-                pixelCoordViewVec = VectorMath.cloneVector(pixelCoord);
-                viewScale = VectorMath.scaleVector(viewVec, -step);
+                    while (true) {
+                        // When moving in the opposite direction, first apply the
+                        // increment so as not to do calculations with the middle
+                        // pixel twice
+                        pixelCoordViewVec = VectorMath.addVectors(pixelCoordViewVec, viewScale);
 
-                while (true) {
-                    // When moving in the opposite direction, first apply the
-                    // increment so as not to do calculations with the middle
-                    // pixel twice
-                    pixelCoordViewVec = VectorMath.addVectors(pixelCoordViewVec, viewScale);
+                        short voxelIntensity = getVoxel(pixelCoordViewVec);
 
-                    short voxelIntensity = getVoxel(pixelCoordViewVec);
+                        // We are out of the figure
+                        if (voxelIntensity == -1) {
+                            break;
+                        }
 
-                    // We are out of the figure
-                    if (voxelIntensity == -1) {
-                        break;
+                        tmpColor = tFunc.getColor(voxelIntensity);
+                        voxelColor.r = tmpColor.r * tmpColor.a + (1 - tmpColor.a) * voxelColor.r;
+                        voxelColor.g = tmpColor.g * tmpColor.a + (1 - tmpColor.a) * voxelColor.g;
+                        voxelColor.b = tmpColor.b * tmpColor.a + (1 - tmpColor.a) * voxelColor.b;
+
                     }
-
-                    tmpColor = tFunc.getColor(voxelIntensity);
-                    voxelColor.r = tmpColor.r * tmpColor.a + (1 - tmpColor.a) * voxelColor.r;
-                    voxelColor.g = tmpColor.g * tmpColor.a + (1 - tmpColor.a) * voxelColor.g;
-                    voxelColor.b = tmpColor.b * tmpColor.a + (1 - tmpColor.a) * voxelColor.b;
-
                 }
 
                 // BufferedImage expects a pixel color packed as ARGB in an int
