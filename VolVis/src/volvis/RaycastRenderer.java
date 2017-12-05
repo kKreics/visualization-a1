@@ -112,9 +112,9 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
 
         if (skipTrilinearInterpolation) return volume.getVoxel(x0, y0, z0);
 
-        int x1 = (int) Math.ceil(coord[0]);
-        int y1 = (int) Math.ceil(coord[1]);
-        int z1 = (int) Math.ceil(coord[2]);
+        int x1 = x0 + 1;
+        int y1 = y0 + 1;
+        int z1 = z0 + 1;
 
         double alfa = coord[0] - x0;
         double beta = coord[1] - y0;
