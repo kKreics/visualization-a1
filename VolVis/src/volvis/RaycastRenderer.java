@@ -412,6 +412,49 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
     }
 
 
+    // Implementation of the Levoy's formula from the paper. Returns the
+    // opacity value for some voxel.
+    //
+    // Parameters
+    // ----------
+    // coord
+    //     Coordinates of the point for which to apply the formula. I think in
+    //     the paper they are represented by x_i.
+    // f_v
+    //     Specifies the value for the voxels which we want to focus on.
+    //     For example, f_v == 73 means focus the image on displaying the
+    //     voxels with intensity 73 or similar. I think it must come
+    //     somehow from the 2-D transfer function editor
+    // r
+    //     Desired thickness in the voxels. I think we should try like r = 3.
+    double levoysFormula(double[] coord, short f_v, double r) {
+        // Voxel value of the specified point
+        short f_xi = getVoxel(coord);
+
+        // Gradient value of the specified point
+        // Note that its magnitude (mag) is always positive, so we do not have
+        // to put so many abs(...) around it like in the book
+        VoxelGradient gradient = getGradient(coord);
+
+        boolean condition_one = (gradient.mag == 0) && (f_xi == f_v);
+        boolean condition_two = (gradient.mag > 0)
+                                && (f_xi - r*gradient.mag <= f_v)
+                                && (f_xi + r*gradient.mag >= f_v);
+
+        if (condition_one) {
+            return 1;
+        }
+        else if (condition_two) {
+            double division_part = (f_v - f_xi) / gradient.mag;
+
+            return 1 - (1/r) * abs(division_part);
+        }
+        else {
+            return 0;
+        }
+    }
+
+
     private void drawBoundingBox(GL2 gl) {
         gl.glPushAttrib(GL2.GL_CURRENT_BIT);
         gl.glDisable(GL2.GL_LIGHTING);
