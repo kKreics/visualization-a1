@@ -84,6 +84,20 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
         return tfEditor;
     }
 
+    VoxelGradient getGradient(double[] coord) {
+        if (coord[0] < 0 || coord[0] >= gradients.getDimX()
+                || coord[1] < 0 || coord[1] >= gradients.getDimY()
+                || coord[2] < 0 || coord[2] >= gradients.getDimZ()) {
+            return new VoxelGradient();
+        }
+
+        int x = (int) Math.floor(coord[0]);
+        int y = (int) Math.floor(coord[1]);
+        int z = (int) Math.floor(coord[2]);
+
+        return gradients.getGradient(x, y, z);
+    }
+
 
     short getVoxel(double[] coord) {
 
