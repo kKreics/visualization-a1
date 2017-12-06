@@ -422,14 +422,11 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
     // coord
     //     Coordinates of the point for which to apply the formula. I think in
     //     the paper they are represented by x_i.
-    // f_v
-    //     Specifies the value for the voxels which we want to focus on.
-    //     For example, f_v == 73 means focus the image on displaying the
-    //     voxels with intensity 73 or similar. I think it must come
-    //     somehow from the 2-D transfer function editor
-    // r
-    //     Desired thickness in the voxels. I think we should try like r = 3.
-    double levoysFormula(double[] coord, short f_v, double r) {
+    double levoysFormula(double[] coord) {
+        // Specifies the value for the voxels which we want to focus on
+        int f_v = tfEditor2D.triangleWidget.baseIntensity;
+        // Desired thickness in the voxels
+        double r = tfEditor2D.triangleWidget.radius;
         // Voxel value of the specified point
         short f_xi = getVoxel(coord);
 
