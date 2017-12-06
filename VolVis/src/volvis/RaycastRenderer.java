@@ -439,8 +439,10 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
         boolean condition_two = (gradient.mag > 0)
                                 && (f_xi - r*gradient.mag <= f_v)
                                 && (f_xi + r*gradient.mag >= f_v);
-
-        if (condition_one) {
+        if (gradient.mag < tfEditor2D.triangleWidget.minGradientValue 
+                || gradient.mag > tfEditor2D.triangleWidget.maxGradientValue) {
+            return 0;
+        } else if (condition_one) {
             return 1;
         }
         else if (condition_two) {

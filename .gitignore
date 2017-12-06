@@ -27,3 +27,6 @@ hs_err_pid*
 VolVis/.DS_Store
 VolVis/lib/.DS_Store
 
+# dist
+VolVis/dist
+
