@@ -610,7 +610,22 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
         long startTime = System.currentTimeMillis();
         // Here we should change the "mip" call to whichever visualization
         // method we want (i.e.: mip, slicer...).
-        composite(viewMatrix);
+        switch (panel.selectedOption) {
+            case 0:
+                slicer(viewMatrix);
+                break;
+            case 1:
+                mip(viewMatrix);
+                break;
+            case 2:
+                composite(viewMatrix);
+                break;
+            case 3:
+                gradientOpacity(viewMatrix);
+                break;
+            default:
+                slicer(viewMatrix);
+        }
 
         long endTime = System.currentTimeMillis();
         double runningTime = (endTime - startTime);
