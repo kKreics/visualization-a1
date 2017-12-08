@@ -28,16 +28,21 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="renderingSpeedLabel" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="103" alignment="1" groupAlignment="0" attributes="0">
-                      <Component id="compositingButton" min="-2" max="-2" attributes="0"/>
-                      <Component id="tf2dButton" min="-2" max="-2" attributes="0"/>
-                      <Component id="mipButton" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="slicerButton" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="shadingCheckbox" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="interpolation" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="compositingButton" min="-2" max="-2" attributes="0"/>
+                          <Component id="tf2dButton" min="-2" max="-2" attributes="0"/>
+                          <Component id="mipButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="slicerButton" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="shadingCheckbox" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="interpolation" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="339" max="32767" attributes="0"/>
+              <EmptySpace pref="58" max="32767" attributes="0"/>
+              <Component id="raycastBothWays" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="116" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -52,7 +57,10 @@
               <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
               <Component id="slicerButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="mipButton" min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="mipButton" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="raycastBothWays" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="compositingButton" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
@@ -137,6 +145,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="interpolationActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="raycastBothWays">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Raycast both ways (MIP)"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="raycastBothWaysActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>

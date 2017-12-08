@@ -27,9 +27,6 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
 
     private Volume volume = null;
     private int interactiveStep = 35;
-    // If true, ray will be casted both directions from the middle of the
-    // figure. If false, ray will be casted only in one direction.
-    private boolean raycastBothWays = true;
     private GradientVolume gradients = null;
     RaycastRendererPanel panel;
     TransferFunction tFunc;
@@ -284,7 +281,7 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
                     pixelCoordViewVec = VectorMath.addVectors(pixelCoordViewVec, viewScale);
                 }
 
-                if (this.raycastBothWays) {
+                if (panel.enableRaycastBothWays) {
                     // Move in the opposite direction of viewVec, starting in the
                     // plane that cuts the figure in two, perpendicular to the
                     // viewPlane

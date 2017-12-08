@@ -20,6 +20,7 @@ public class RaycastRendererPanel extends javax.swing.JPanel {
     public int selectedOption = 0;
     public boolean shadingActive = false;
     public boolean triInterpolation = false;
+    public boolean enableRaycastBothWays = false;
 
     /**
      * Creates new form RaycastRendererPanel
@@ -52,6 +53,7 @@ public class RaycastRendererPanel extends javax.swing.JPanel {
         tf2dButton = new javax.swing.JRadioButton();
         shadingCheckbox = new javax.swing.JCheckBox();
         interpolation = new javax.swing.JCheckBox();
+        raycastBothWays = new javax.swing.JCheckBox();
 
         jLabel1.setText("Rendering time (ms):");
 
@@ -105,6 +107,13 @@ public class RaycastRendererPanel extends javax.swing.JPanel {
             }
         });
 
+        raycastBothWays.setText("Raycast both ways (MIP)");
+        raycastBothWays.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                raycastBothWaysActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -116,14 +125,18 @@ public class RaycastRendererPanel extends javax.swing.JPanel {
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(renderingSpeedLabel))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(compositingButton)
-                        .addComponent(tf2dButton)
-                        .addComponent(mipButton)
-                        .addComponent(slicerButton)
-                        .addComponent(shadingCheckbox)
-                        .addComponent(interpolation)))
-                .addContainerGap(339, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(compositingButton)
+                            .addComponent(tf2dButton)
+                            .addComponent(mipButton)
+                            .addComponent(slicerButton)
+                            .addComponent(shadingCheckbox)
+                            .addComponent(interpolation))
+                        .addGap(24, 24, 24)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                .addComponent(raycastBothWays)
+                .addGap(116, 116, 116))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -135,7 +148,9 @@ public class RaycastRendererPanel extends javax.swing.JPanel {
                 .addGap(49, 49, 49)
                 .addComponent(slicerButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(mipButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(mipButton)
+                    .addComponent(raycastBothWays))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(compositingButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -172,12 +187,17 @@ public class RaycastRendererPanel extends javax.swing.JPanel {
         triInterpolation = !triInterpolation;
     }//GEN-LAST:event_interpolationActionPerformed
 
+    private void raycastBothWaysActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_raycastBothWaysActionPerformed
+        enableRaycastBothWays = !enableRaycastBothWays;
+    }//GEN-LAST:event_raycastBothWaysActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JRadioButton compositingButton;
     private javax.swing.JCheckBox interpolation;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JRadioButton mipButton;
+    private javax.swing.JCheckBox raycastBothWays;
     private javax.swing.JLabel renderingSpeedLabel;
     private javax.swing.JCheckBox shadingCheckbox;
     private javax.swing.JRadioButton slicerButton;
