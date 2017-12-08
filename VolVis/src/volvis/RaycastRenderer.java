@@ -26,7 +26,6 @@ import volume.VoxelGradient;
 public class RaycastRenderer extends Renderer implements TFChangeListener {
 
     private Volume volume = null;
-    private int interactiveStep = 35;
     private GradientVolume gradients = null;
     RaycastRendererPanel panel;
     TransferFunction tFunc;
@@ -222,7 +221,7 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
 
     void mip(double[] viewMatrix) {
         // clear image
-        int step = interactiveMode ? interactiveStep : 1;
+        int step = interactiveMode ? panel.responsiveness.getValue() : 1;
         for (int j = 0; j < image.getHeight(); j++) {
             for (int i = 0; i < image.getWidth(); i++) {
                 image.setRGB(i, j, 0);
@@ -330,7 +329,7 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
 
     void composite(double[] viewMatrix) {
         // clear image
-        int step = interactiveMode ? interactiveStep : 1;
+        int step = interactiveMode ? panel.responsiveness.getValue() : 1;
         for (int j = 0; j < image.getHeight(); j++) {
             for (int i = 0; i < image.getWidth(); i++) {
                 image.setRGB(i, j, 0);
@@ -475,7 +474,7 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
 
     void gradientOpacity(double[] viewMatrix) {
         // clear image
-        int step = interactiveMode ? 12 : 1;
+        int step = interactiveMode ? panel.responsiveness.getValue() : 1;
         for (int j = 0; j < image.getHeight(); j++) {
             for (int i = 0; i < image.getWidth(); i++) {
                 image.setRGB(i, j, 0);

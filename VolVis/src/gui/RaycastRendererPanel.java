@@ -54,6 +54,8 @@ public class RaycastRendererPanel extends javax.swing.JPanel {
         shadingCheckbox = new javax.swing.JCheckBox();
         interpolation = new javax.swing.JCheckBox();
         raycastBothWays = new javax.swing.JCheckBox();
+        jLabel2 = new javax.swing.JLabel();
+        responsiveness = new javax.swing.JSlider();
 
         jLabel1.setText("Rendering time (ms):");
 
@@ -114,29 +116,44 @@ public class RaycastRendererPanel extends javax.swing.JPanel {
             }
         });
 
+        jLabel2.setText("Interactive responsiveness (higher = faster but worse results)");
+
+        responsiveness.setMajorTickSpacing(5);
+        responsiveness.setMaximum(50);
+        responsiveness.setMinimum(1);
+        responsiveness.setMinorTickSpacing(1);
+        responsiveness.setValue(25);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(renderingSpeedLabel))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(renderingSpeedLabel))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(compositingButton)
+                                    .addComponent(tf2dButton)
+                                    .addComponent(mipButton)
+                                    .addComponent(slicerButton)
+                                    .addComponent(shadingCheckbox)
+                                    .addComponent(interpolation))
+                                .addGap(24, 24, 24)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                        .addComponent(raycastBothWays)
+                        .addGap(116, 116, 116))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(compositingButton)
-                            .addComponent(tf2dButton)
-                            .addComponent(mipButton)
-                            .addComponent(slicerButton)
-                            .addComponent(shadingCheckbox)
-                            .addComponent(interpolation))
-                        .addGap(24, 24, 24)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
-                .addComponent(raycastBothWays)
-                .addGap(116, 116, 116))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(responsiveness, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -159,7 +176,11 @@ public class RaycastRendererPanel extends javax.swing.JPanel {
                 .addComponent(shadingCheckbox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(interpolation)
-                .addContainerGap(112, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(responsiveness, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(45, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -196,9 +217,11 @@ public class RaycastRendererPanel extends javax.swing.JPanel {
     private javax.swing.JRadioButton compositingButton;
     private javax.swing.JCheckBox interpolation;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JRadioButton mipButton;
     private javax.swing.JCheckBox raycastBothWays;
     private javax.swing.JLabel renderingSpeedLabel;
+    public javax.swing.JSlider responsiveness;
     private javax.swing.JCheckBox shadingCheckbox;
     private javax.swing.JRadioButton slicerButton;
     private javax.swing.JRadioButton tf2dButton;
