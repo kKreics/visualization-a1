@@ -456,10 +456,7 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
     }
 
     // l and v are viewVecs, g is gradient
-    TFColor phong(double[] v, double[] g, TFColor diffuse) {
-        // set diffuse and ambient
-        // TFColor diffuse = new TFColor();
-        TFColor ambient = diffuse;
+    TFColor phong(double[] v, double[] g, TFColor color) {
         // take the parameters from the assignment description
         double kAmb = 0.1;
         double kDiff = 0.7;
@@ -472,10 +469,10 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
 
         // use simplified model formula from slide
         return new TFColor(
-            kAmb * ambient.r + kDiff * diffuse.r * x + kSpec * y,
-            kAmb * ambient.g + kDiff * diffuse.g * x + kSpec * y,
-            kAmb * ambient.b + kDiff * diffuse.b * x + kSpec * y,
-            diffuse.a
+            kAmb * color.r + kDiff * color.r * x + kSpec * y,
+            kAmb * color.g + kDiff * color.g * x + kSpec * y,
+            kAmb * color.b + kDiff * color.b * x + kSpec * y,
+            color.a
         );
     }
 
