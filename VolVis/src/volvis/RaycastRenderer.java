@@ -551,7 +551,9 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
                     if (panel.shadingActive) {
                         VoxelGradient h = getGradient(pixelCoordViewVec);
 
-                        tmpColor = phong(viewVec, h.normal(), tmpColor);
+                        if (h.mag != 0) {
+                            tmpColor = phong(viewVec, h.normal(), tmpColor);
+                        }
                     }
 
                     voxelColor.r = tmpColor.r * tmpColor.a + (1 - tmpColor.a) * voxelColor.r;
