@@ -439,7 +439,7 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
         boolean condition_two = (gradient.mag > 0)
                                 && (f_xi - r*gradient.mag <= f_v)
                                 && (f_xi + r*gradient.mag >= f_v);
-        if (gradient.mag < tfEditor2D.triangleWidget.minGradientValue 
+        if (gradient.mag < tfEditor2D.triangleWidget.minGradientValue
                 || gradient.mag > tfEditor2D.triangleWidget.maxGradientValue) {
             return 0;
         } else if (condition_one) {
@@ -455,10 +455,34 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
         }
     }
 
+    // l and v are viewVecs, g is gradient
+    TFColor phong(double[] v, double[] g, TFColor diffuse) {
+        // set diffuse and ambient
+        // TFColor diffuse = new TFColor();
+        TFColor ambient = diffuse;
+        // take the parameters from the assignment description
+        double kAmb = 0.1;
+        double kDiff = 0.7;
+        double kSpec = 0.2;
+        double alpha = 10;
+
+        // dot product here always returns a non negative value
+        double x = Math.max(0, VectorMath.dotproduct(v, g));
+        double y = Math.pow(x, alpha);
+
+        // use simplified model formula from slide
+        return new TFColor(
+            kAmb * ambient.r + kDiff * diffuse.r * x + kSpec * y,
+            kAmb * ambient.g + kDiff * diffuse.g * x + kSpec * y,
+            kAmb * ambient.b + kDiff * diffuse.b * x + kSpec * y,
+            diffuse.a
+        );
+    }
+
 
     void gradientOpacity(double[] viewMatrix) {
         // clear image
-        int step = interactiveMode ? interactiveStep : 1;
+        int step = interactiveMode ? 12 : 1;
         for (int j = 0; j < image.getHeight(); j++) {
             for (int i = 0; i < image.getWidth(); i++) {
                 image.setRGB(i, j, 0);
@@ -473,6 +497,7 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
         VectorMath.setVector(viewVec, viewMatrix[2], viewMatrix[6], viewMatrix[10]);
         VectorMath.setVector(uVec, viewMatrix[0], viewMatrix[4], viewMatrix[8]);
         VectorMath.setVector(vVec, viewMatrix[1], viewMatrix[5], viewMatrix[9]);
+        viewVec = VectorMath.normalized(viewVec);
 
         // image is square
         int imageCenter = image.getWidth() / 2;
@@ -485,6 +510,7 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
             for (int i = 0; i < image.getWidth(); i++) {
                 TFColor voxelColor = new TFColor();
                 TFColor tmpColor = new TFColor();
+                //TFColor shadeColor = new TFColor();
 
                 pixelCoord[0] = uVec[0] * (i - imageCenter) + vVec[0] * (j - imageCenter)
                         + volumeCenter[0];
@@ -497,6 +523,7 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
                 // that cuts the figure in two, perpendicular to the viewPlane
                 double[] pixelCoordViewVec = VectorMath.cloneVector(pixelCoord);
                 double[] viewScale = VectorMath.scaleVector(viewVec, step);
+                viewScale = VectorMath.scaleVector(viewScale, -1);
 
                 // Advance until the end of the volume (out of bounds)
                 while (getVoxel(pixelCoordViewVec) != -1) {
@@ -509,6 +536,10 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
                 pixelCoordViewVec = VectorMath.addVectors(pixelCoordViewVec, viewScale);
 
                 // Iterate the volume until we get out of the volume from the other side
+                voxelColor.r = 0;
+                voxelColor.b = 0;
+                voxelColor.g = 0;
+                voxelColor.a = 1;
                 while (true) {
                     short voxelIntensity = getVoxel(pixelCoordViewVec);
 
@@ -519,6 +550,13 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
 
                     tmpColor = tfEditor2D.triangleWidget.color;
                     tmpColor.a = levoysFormula(pixelCoordViewVec);
+
+                    if (true) {
+                        VoxelGradient h = getGradient(pixelCoordViewVec);
+
+                        tmpColor = phong(viewVec, h.normal(), tmpColor);
+                    }
+
                     voxelColor.r = tmpColor.r * tmpColor.a + (1 - tmpColor.a) * voxelColor.r;
                     voxelColor.g = tmpColor.g * tmpColor.a + (1 - tmpColor.a) * voxelColor.g;
                     voxelColor.b = tmpColor.b * tmpColor.a + (1 - tmpColor.a) * voxelColor.b;

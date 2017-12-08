@@ -64,11 +64,16 @@ public class VectorMath {
         r[2] = v[0] * w[1] - v[1] * w[0];
         return r;
     }
-    
+
     // compute length of vector v
     public static double length(double[] v) {
         return Math.sqrt(v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
     }
-    
+
+    public static double[] normalized(double [] v) {
+        double mag = VectorMath.length(v);
+        return new double[] {v[0]/mag, v[1]/mag, v[2]/mag};
+    }
+
 
 }
