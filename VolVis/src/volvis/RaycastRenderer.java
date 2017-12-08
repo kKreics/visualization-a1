@@ -551,7 +551,7 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
                     tmpColor = tfEditor2D.triangleWidget.color;
                     tmpColor.a = levoysFormula(pixelCoordViewVec);
 
-                    if (true) {
+                    if (panel.shadingActive) {
                         VoxelGradient h = getGradient(pixelCoordViewVec);
 
                         tmpColor = phong(viewVec, h.normal(), tmpColor);
