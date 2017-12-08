@@ -30,7 +30,6 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
     // If true, ray will be casted both directions from the middle of the
     // figure. If false, ray will be casted only in one direction.
     private boolean raycastBothWays = true;
-    private boolean skipTrilinearInterpolation = false;
     private GradientVolume gradients = null;
     RaycastRendererPanel panel;
     TransferFunction tFunc;
@@ -112,7 +111,7 @@ public class RaycastRenderer extends Renderer implements TFChangeListener {
         int y0 = (int) Math.floor(coord[1]);
         int z0 = (int) Math.floor(coord[2]);
 
-        if (skipTrilinearInterpolation) return volume.getVoxel(x0, y0, z0);
+        if (panel.shadingActive) return volume.getVoxel(x0, y0, z0);
 
         int x1 = x0 + 1;
         int y1 = y0 + 1;
